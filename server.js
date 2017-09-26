@@ -5,7 +5,7 @@ const bodyParser = require('body-parser')
 const port = process.env.PORT || 9000
 const path = require('path')
 const file = path.resolve(__dirname, 'src/public/index.html')
-const routes = require('./routes')
+const routes = require('./server/routes')
 
 
 // App

@@ -1,0 +1,11 @@
+body {
+  margin: 0px;
+}
+
+html {
+  overflow-y: hidden !important;
+  overflow: hidden !important;
+  user-select: none;
+}
+
+@import "~bulma/bulma.sass"
