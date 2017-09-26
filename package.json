@@ -1,0 +1,20 @@
+{
+  "name": "dnb",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Nabeel Virani",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.16.2",
+    "body-parser": "^1.18.2",
+    "express": "^4.15.4",
+    "http": "0.0.0",
+    "morgan": "^1.8.2",
+    "path": "^0.12.7",
+    "yahoo-finance-data": "^3.2.0"
+  }
+}
