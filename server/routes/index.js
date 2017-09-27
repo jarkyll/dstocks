@@ -12,7 +12,7 @@ const api = new YahooFinanceAPI({
 
 routes.get('/stockInfo', (req, res) => {
   const promise = new Promise((resolve, reject) => {
-    api.getIntradayChartData(req.query.ticker).then(data => {
+    api.getIntradayChartData(req.query.ticker, '5m').then(data => {
       resolve(data.chart.result)
     }).catch(err => {
       reject(err)
@@ -21,7 +21,7 @@ routes.get('/stockInfo', (req, res) => {
   promise.then(response => {
     api.getRealtimeQuotes(req.query.ticker).then(data => {
       res.status(200).send({
-        derp: response,
+        chart: response[0],
         result: data.query.results
       })
     }).catch(err => console.log(err))

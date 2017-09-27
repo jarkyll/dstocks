@@ -2,6 +2,9 @@ import React from 'react'
 import styles from './stock.scss'
 const axios = require('axios')
 const store = require('store')
+import Card from '../card/card.jsx'
+import Chart from 'chart.js';
+import classNames from 'classnames'
 
 class Stock extends React.Component {
 	constructor (props) {
@@ -10,8 +13,12 @@ class Stock extends React.Component {
 		this.saveStock = this.saveStock.bind(this)
 		this.fetchSavedStock = this.fetchSavedStock.bind(this)
 		this.updateInput = this.updateInput.bind(this)
+		let data = store.get('result')
 		this.state = {
-			inputValue: ''
+			inputValue: '',
+			result: null,
+			fetchingInfo: false,
+			savedInfo: data
 		}
 	}
 
@@ -31,37 +38,49 @@ class Stock extends React.Component {
 				ticker: this.state.inputValue
 			}
 		}
+
+		this.setState((prevState, props) => {
+			return {
+				fetchingInfo: true
+			}
+		})
+
 		axios.get('http://localhost:9000/api/stockInfo', payload).then(response => {
 			console.log(response.data)
+			this.setState((prevState, props) => {
+				return {
+					result: response.data,
+					fetchingInfo: false
+				}
+			})
+
+
 		}).catch(response => {
 			this.setState((prevState, props) => {
 				return {
-					value: '',
-					display: 'No account associated with that PIN.'
+					result: response.data,
+					fetchingInfo: false
 				}
 			})
 		})
 	}
 
-	saveStock (page) {
-		this.setState((prevState, props) => {
-			return {
-				page: 'rotate' + page
-			}
-		})
+	saveStock () {
+		store.set('result', this.state.result)
 	}
 
 	fetchSavedStock () {
-		console.log('clicked it')
-		console.log(this.state)
-		this.setState((prevState, props) => {
-			return {
-				count: prevState.count + 1
-			}
-		})
+		console.log(this.state.result)
+		console.log(this.state.result.result.quote.Name)
+		//console.log(store.get('result'))
 	}
 
 	render () {
+
+		const button = classNames({
+			'button': true,
+			'is-loading': this.state.fetchingInfo
+		})
 		return (
 			<div id={ styles.about } className="columns is-marginless is-multiline">
 				<div className="column is-12">
@@ -73,17 +92,22 @@ class Stock extends React.Component {
 
 					<div className="field is-grouped is-pulled-right">
 					  <div className="control">
-							<button className="button" onClick={this.fetchStock}>Get Stock Info</button>
+							<button className={button} onClick={this.fetchStock}>Get Stock Info</button>
 						</div>
 
 						<div className="control">
-							<button className="button" onClick={this.saveStock}>Save</button>
-						</div>
-
-						<div className="control">
-							<button className="button" onClick={this.fetchSavedStock}>Alert</button>
+							<button className={button} onClick={this.fetchSavedStock}>Alert</button>
 						</div>
 					</div>
+
+					{ this.state.savedInfo &&
+						<Card data={this.state.savedInfo}/>
+					}
+
+					{ this.state.result &&
+						<Card data={this.state.result}/>
+					}
+
 				</div>
 			</div>
 		)
