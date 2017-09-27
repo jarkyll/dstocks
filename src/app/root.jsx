@@ -1,14 +1,14 @@
 import React from 'react'
 import {render}  from 'react-dom'
 import { HashRouter } from 'react-router-dom'
-import AV from './components/av/av.jsx'
+import Stock from './components/stock/stock.jsx'
 require('./main.scss')
 
 
 class Root extends React.Component {
 	render () {
 	  return (
-			<AV/>
+			<Stock/>
 	  )
 	}
 }

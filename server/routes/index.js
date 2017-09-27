@@ -10,19 +10,22 @@ const api = new YahooFinanceAPI({
 
 
 
-api
-  .getRealtimeQuotes('YHOO,MSFT,AAPL').then(data => {
-    console.log(data.query.results)
-  }).catch(err => console.log(err))
-
 routes.get('/stockInfo', (req, res) => {
-  console.log(req, res)
-  console.log('goteeem')
-  api.getRealtimeQuotes('YHOO,MSFT,AAPL').then(data => {
-    res.status(200).send({
-      result: data.query.results
+  const promise = new Promise((resolve, reject) => {
+    api.getIntradayChartData(req.query.ticker).then(data => {
+      resolve(data.chart.result)
+    }).catch(err => {
+      reject(err)
     })
-  }).catch(err => console.log(err))
+  })
+  promise.then(response => {
+    api.getRealtimeQuotes(req.query.ticker).then(data => {
+      res.status(200).send({
+        derp: response,
+        result: data.query.results
+      })
+    }).catch(err => console.log(err))
+  })
 })
 
 
