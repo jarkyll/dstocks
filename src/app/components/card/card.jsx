@@ -86,14 +86,23 @@ class Card extends React.Component {
 	render () {
 
 		let changeText = ''
+		let textClass = null
+
 		if (this.state.change > 0 ) {
-				changeText = ' +' + this.state.change + ' (+' + this.state.changePercent + ')'
+				changeText = ' +' + this.state.change + ' (+' + this.state.changePercent + '%)'
+				textClass = classNames({
+					'has-text-success': true
+				})
 		} else {
-				changeText = ' ' + this.state.change + ' (' + this.state.changePercent + ')'
+				changeText = ' ' + this.state.change + ' (' + this.state.changePercent + '%)'
+				textClass = classNames({
+					'has-text-danger': true
+				})
 		}
 
 
 		let button = null
+		let buttonClass = null
 		if (this.props.save) {
 			button = <button className="button" onClick={this.saveStock}>Save</button>
 		} else {
@@ -121,7 +130,7 @@ class Card extends React.Component {
 
 									<div className="column is-3">
 										<span className="subtitle">Current:</span> { parseFloat(this.state.info.result.quote.realtime_price).toFixed(2) }
-										{changeText}
+										<span className={textClass}>{changeText}</span>
 									</div>
 
 									<div className="column is-3">
