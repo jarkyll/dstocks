@@ -16,13 +16,11 @@ class Stock extends React.Component {
 		this.fetchSavedStock = this.fetchSavedStock.bind(this)
 		this.updateInput = this.updateInput.bind(this)
 		this.updateSavedInfo = this.updateSavedInfo.bind(this)
-		let data = store.get('result')
-		console.log(store.get('result'))
 		this.state = {
 			inputValue: '',
 			result: null,
 			fetchingInfo: false,
-			savedInfo: data
+			savedInfo: null
 		}
 	}
 
@@ -74,9 +72,12 @@ class Stock extends React.Component {
 	}
 
 	fetchSavedStock () {
-		console.log(this.state.result)
-		console.log(this.state.result.result.quote.Name)
-		//console.log(store.get('result'))
+		let data = store.get('result')
+		this.setState((prevState, props) => {
+			return {
+				savedInfo: data
+			}
+		})
 	}
 
 	updateSavedInfo (newState) {
@@ -106,8 +107,9 @@ class Stock extends React.Component {
 					<div className="columns is-marginless">
 					<div className="is-clearfix column is-12">
 						<div className="field">
+							<label className="label title is-1">Stocks Demo</label>
 							<div className="control">
-								<input type="text" className="input" value={this.state.inputValue} onChange={this.updateInput}/>
+								<input type="text" className="input" autoCorrect="off" spellCheck="false" value={this.state.inputValue} onChange={this.updateInput}/>
 							</div>
 						</div>
 
@@ -117,7 +119,7 @@ class Stock extends React.Component {
 							</div>
 
 							<div className="control">
-								<button className={button} onClick={this.fetchSavedStock}>Alert</button>
+								<button className={button} onClick={this.fetchSavedStock}>Get Saved Stocks</button>
 							</div>
 						</div>
 						</div>
