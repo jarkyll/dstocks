@@ -24,9 +24,10 @@ class Stock extends React.Component {
 			result: null,
 			fetchingInfo: false,
 			savedInfo: null,
+			fetchSaved: false,
 			alertOptions: {
 		    offset: 14,
-		    position: 'bottom left',
+		    position: 'bottom right',
 		    theme: 'dark',
 		    time: 5000,
 		    transition: 'scale'
@@ -93,7 +94,8 @@ class Stock extends React.Component {
 		let data = store.get('result')
 		this.setState((prevState, props) => {
 			return {
-				savedInfo: data
+				savedInfo: data,
+				fetchSaved: true
 			}
 		})
 	}
@@ -157,7 +159,7 @@ class Stock extends React.Component {
 							<Card data={this.state.result} save={true} updateSave={this.updateSavedInfo} alert={this.showAlert = this.showAlert.bind(this)}/>
 						}
 
-						{savedInfo.length > 1 && savedInfo}
+						{ (savedInfo.length > 1 && savedInfo) || (savedInfo.length === 1 && this.state.fetchSaved && <div id={ styles.savedTitle } className="title is-size-1 is-size-5-mobile has-text-centered column is-12" key={0}>No Saved Stocks</div>)}
 					</div>
 				</div>
 
