@@ -55,8 +55,11 @@ var config = {
               {
 								loader: 'sass-loader',
 								query: {
-										modules: true,
-										sourceMap: true
+									modules: true,
+									sourceMap: true,
+									importLoaders: 2,
+									allowMultiple: true,
+									localIdentName: '[name]__[local]___[hash:base64:5]'
 								}
           		}
 						]

@@ -53,7 +53,7 @@ class Card extends React.Component {
 		        labels: this.state.info.chart.timestamp,
 		        datasets: [{
 		            label: this.state.info.result.quote.Symbol,
-		            borderColor: 'rgb(255, 99, 132)',
+		            borderColor: 'rgb(48, 149, 180)',
 		            data: this.state.info.chart.indicators.quote[0].open,
 		        }]
 		    }

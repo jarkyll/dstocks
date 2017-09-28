@@ -9,4 +9,20 @@ html {
   background-color: whitesmoke !important;
 }
 
-@import "~bulma/bulma.sass"
+input:active, input:focus {
+  box-shadow: 0 0 0 0.125em rgba(0, 209, 178, 0.25);
+}
+
+
+@import "~bulma/sass/utilities/initial-variables.sass";
+
+$family-serif: "Merriweather", "Georgia", serif;
+
+// 3. Set the derived variables
+// Use the new pink as the primary color
+$primary: #005172;
+// Use the new serif family
+$family-primary: $family-serif;
+
+@import "~bulma/bulma.sass";
+$primary: #dddddd;
