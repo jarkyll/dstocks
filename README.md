@@ -1,4 +1,7 @@
 # Node and npm must be installed beforehand.
+# After installing node and npm, npm install should install the necessary
+# npm modules needed to run the app.
+
 
 ## npm run server: runs the node server on port 9000
 
