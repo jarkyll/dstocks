@@ -11,6 +11,7 @@ class Card extends React.Component {
 		super(props)
 		this.saveStock = this.saveStock.bind(this)
 		this.deleteStock = this.deleteStock.bind(this)
+		this.convertTimeStamp = this.convertTimeStamp.bind(this)
 		this.state = {
 			inputValue: '',
 			fetchingInfo: false,
@@ -19,6 +20,15 @@ class Card extends React.Component {
 		}
 	}
 
+
+	convertTimeStamp (timestamp) {
+		const date = new Date(timestamp * 1000);
+		const hours = date.getHours()
+		const minutes = "0" + date.getMinutes()
+		const seconds = "0" + date.getSeconds()
+
+		return hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2)
+	}
 
 	saveStock () {
 		let savedStocks = store.get('result')
@@ -50,7 +60,7 @@ class Card extends React.Component {
 
 		    // The data for our dataset
 		    data: {
-		        labels: this.state.info.chart.timestamp,
+		        labels: this.state.info.chart.timestamp.map(x => this.convertTimeStamp(x)),
 		        datasets: [{
 		            label: this.state.info.result.quote.Symbol,
 		            borderColor: 'rgb(48, 149, 180)',
@@ -93,19 +103,19 @@ class Card extends React.Component {
 							<div className="column is-8">
 								<div className="columns is-multiline">
 									<div className="column is-6">
-										<span className="subtitle">Open:</span> { this.state.info.result.quote.Open }
+										<span className="subtitle">Open:</span> { parseFloat(this.state.info.result.quote.Open).toFixed(2) }
 									</div>
 
 									<div className="column is-6">
-										<span className="subtitle">Current:</span> { this.state.info.result.quote.realtime_price}
+										<span className="subtitle">Current:</span> { parseFloat(this.state.info.result.quote.realtime_price).toFixed(2) }
 									</div>
 
 									<div className="column is-6">
-										<span className="subtitle">Change:</span> { this.state.info.result.quote.realtime_change}
+										<span className="subtitle">Change:</span> { parseFloat(this.state.info.result.quote.realtime_change).toFixed(2) }
 									</div>
 
 									<div className="column is-6">
-										<span className="subtitle">ChangePercent:</span> { this.state.info.result.quote.realtime_chg_percent}
+										<span className="subtitle">ChangePercent:</span> { parseFloat(this.state.info.result.quote.realtime_chg_percent).toFixed(2) }
 									</div>
 								</div>
 							</div>
