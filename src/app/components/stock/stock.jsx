@@ -79,14 +79,6 @@ class Stock extends React.Component {
 		//console.log(store.get('result'))
 	}
 
-
-	shouldComponentUpdate(nextProps, nextState) {
-		console.log(nextProps, nextState)
-		console.log(store.get('results'))
-
-		return true
-	}
-
 	updateSavedInfo (newState) {
 		this.setState((prevState, props) => {
 			return {
@@ -104,9 +96,8 @@ class Stock extends React.Component {
 
 		let savedInfo = []
 
-
-		_.forEach(this.state.savedInfo, function (value, index) {
-			savedInfo.push(<Card data={value} key={index} className="column is-12"/>)
+		_.forEach(this.state.savedInfo, (value, index) => {
+			savedInfo.push(<Card data={value} key={index} save={false} updateSave={this.updateSavedInfo} index={index} className="column is-12"/>)
 		})
 
 		return (
@@ -135,7 +126,7 @@ class Stock extends React.Component {
 				<div className="column is-12">
 					<div id={ styles.stocks } className="columns is-multiline">
 						{ this.state.result &&
-							<Card data={this.state.result} updateSave={this.updateSavedInfo}/>
+							<Card data={this.state.result} save={true} updateSave={this.updateSavedInfo}/>
 						}
 
 						{savedInfo}

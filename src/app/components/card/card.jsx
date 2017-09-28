@@ -10,6 +10,7 @@ class Card extends React.Component {
 	constructor (props) {
 		super(props)
 		this.saveStock = this.saveStock.bind(this)
+		this.deleteStock = this.deleteStock.bind(this)
 		this.state = {
 			inputValue: '',
 			fetchingInfo: false,
@@ -26,6 +27,14 @@ class Card extends React.Component {
 		} else {
 			savedStocks = [this.state.info]
 		}
+		store.set('result', savedStocks)
+		this.props.updateSave(savedStocks)
+	}
+
+	deleteStock () {
+		let savedStocks = store.get('result')
+		console.log(savedStocks, this.props)
+		savedStocks.splice(this.props.index, 1)
 		store.set('result', savedStocks)
 		this.props.updateSave(savedStocks)
 	}
@@ -61,6 +70,12 @@ class Card extends React.Component {
 	}
 
 	render () {
+		let button = null
+		if (this.props.save) {
+			button = <button className="button" onClick={this.saveStock}>Save</button>
+		} else {
+			button = <button className="button" onClick={this.deleteStock}>Delete</button>
+		}
 
 		return (
 			<div id={ styles.info } className="field is-clearfix animated fadeIn column is-12">
@@ -97,7 +112,7 @@ class Card extends React.Component {
 
 							<div className="column is-12 field">
 								<div className="control">
-									<button className="button" onClick={this.saveStock}>Save</button>
+								{button}
 								</div>
 							</div>
 						</div>
