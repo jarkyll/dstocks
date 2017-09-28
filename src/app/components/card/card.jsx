@@ -13,11 +13,15 @@ class Card extends React.Component {
 		this.deleteStock = this.deleteStock.bind(this)
 		this.convertTimeStamp = this.convertTimeStamp.bind(this)
 		this.showAlert = this.showAlert.bind(this)
+		let change = parseFloat(this.props.data.result.quote.realtime_change).toFixed(2)
+		let changePercent = parseFloat(this.props.data.result.quote.realtime_chg_percent).toFixed(2)
 		this.state = {
 			inputValue: '',
 			fetchingInfo: false,
 			info: this.props.data,
 			chartId: shortid.generate(),
+			change: change,
+			changePercent: changePercent,
 			alertOptions: {
 		    offset: 14,
 		    position: 'bottom left',
@@ -95,7 +99,18 @@ class Card extends React.Component {
     })
 	}
 
+
 	render () {
+
+		let changeText = ''
+		console.log(this.state.change)
+		if (this.state.change > 0 ) {
+				changeText = ' +' + this.state.change + ' (+' + this.state.changePercent + ')'
+		} else {
+				changeText = ' ' + this.state.change + ' (' + this.state.changePercent + ')'
+		}
+
+
 		let button = null
 		if (this.props.save) {
 			button = <button className="button" onClick={this.saveStock}>Save</button>
@@ -124,14 +139,7 @@ class Card extends React.Component {
 
 									<div className="column is-3">
 										<span className="subtitle">Current:</span> { parseFloat(this.state.info.result.quote.realtime_price).toFixed(2) }
-									</div>
-
-									<div className="column is-3">
-										<span className="subtitle">Change:</span> { parseFloat(this.state.info.result.quote.realtime_change).toFixed(2) }
-									</div>
-
-									<div className="column is-3">
-										<span className="subtitle">ChangePercent:</span> { parseFloat(this.state.info.result.quote.realtime_chg_percent).toFixed(2) }
+										{changeText}
 									</div>
 
 									<div className="column is-3">
@@ -151,11 +159,23 @@ class Card extends React.Component {
 									</div>
 
 									<div className="column is-3">
-										<span className="subtitle">Y:</span> { parseFloat(this.state.info.result.quote.realtime_change).toFixed(2) }
+										<span className="subtitle">EPS:</span> { parseFloat(this.state.info.result.quote.eps_curr_year).toFixed(2) }
 									</div>
 
 									<div className="column is-3">
-										<span className="subtitle">ChangePercent:</span> { parseFloat(this.state.info.result.quote.realtime_chg_percent).toFixed(2) }
+										<span className="subtitle">Volume:</span> { parseFloat(this.state.info.result.quote.Volume).toFixed(2) }
+									</div>
+
+									<div className="column is-3">
+										<span className="subtitle">PERatio:</span> { parseFloat(this.state.info.result.quote.PERatio).toFixed(2) }
+									</div>
+
+									<div className="column is-3">
+										<span className="subtitle">Market Cap:</span> { parseFloat(this.state.info.result.quote.MarketCapitalization).toFixed(2) }
+									</div>
+
+									<div className="column is-6">
+										<span className="subtitle">TimeStamp:</span> {this.state.info.result.quote.realtime_ts}
 									</div>
 								</div>
 							</div>

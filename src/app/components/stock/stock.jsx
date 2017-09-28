@@ -118,10 +118,10 @@ class Stock extends React.Component {
 			'is-loading': this.state.fetchingInfo
 		})
 
-		let savedInfo = []
+		let savedInfo = [<div id={ styles.savedTitle } className="title is-size-1 is-size-5-mobile has-text-centered column is-12" key={0}>Saved Stocks</div>]
 
 		_.forEach(this.state.savedInfo, (value, index) => {
-			savedInfo.push(<Card data={value} key={index} save={false} updateSave={this.updateSavedInfo} index={index} className="column is-12"/>)
+			savedInfo.push(<Card data={value} key={index + 1} save={false} updateSave={this.updateSavedInfo} index={index} className="column is-12"/>)
 		})
 
 		return (
@@ -130,7 +130,7 @@ class Stock extends React.Component {
 					<div className="columns is-marginless">
 					<div className="is-clearfix column is-12">
 						<div className="field">
-							<label className="label title is-1">Stocks Demo</label>
+							<label className="label title is-size-1 is-size-5-mobile">Stocks Demo</label>
 							<div className="control">
 								<input type="text" className="input" autoCorrect="off" spellCheck="false" value={this.state.inputValue} onChange={this.updateInput}/>
 							</div>
@@ -154,7 +154,7 @@ class Stock extends React.Component {
 							<Card data={this.state.result} save={true} updateSave={this.updateSavedInfo} alert={this.showAlert = this.showAlert.bind(this)}/>
 						}
 
-						{savedInfo}
+						{savedInfo.length > 1 && savedInfo}
 					</div>
 				</div>
 
