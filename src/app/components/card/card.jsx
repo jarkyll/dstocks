@@ -1,5 +1,5 @@
 import React from 'react'
-import styles from './stock.scss'
+import styles from './card.scss'
 const axios = require('axios')
 const store = require('store')
 import Chart from 'chart.js';
@@ -12,7 +12,6 @@ class Card extends React.Component {
 		this.saveStock = this.saveStock.bind(this)
 		this.state = {
 			inputValue: '',
-			result: null,
 			fetchingInfo: false,
 			info: this.props.data,
 			chartId: shortid.generate()
@@ -21,7 +20,14 @@ class Card extends React.Component {
 
 
 	saveStock () {
-		store.set('result', this.state.result)
+		let savedStocks = store.get('result')
+		if (savedStocks) {
+			savedStocks.push(this.state.info)
+		} else {
+			savedStocks = [this.state.info]
+		}
+		store.set('result', savedStocks)
+		this.props.updateSave(savedStocks)
 	}
 
 
@@ -46,14 +52,21 @@ class Card extends React.Component {
 		}
 	}
 
+	componentWillReceiveProps(nextProps) {
+		this.setState((prevState, props) => {
+			return {
+				info: nextProps.data
+			}
+		})
+	}
 
 	render () {
 
 		return (
-			<div id={ styles.info } className="field is-clearfix animated fadeIn">
+			<div id={ styles.info } className="field is-clearfix animated fadeIn column is-12">
 				<div className="card">
 				  <div id={ styles.test } className="card-content">
-				    <p className="title">
+				    <p className="title is-size-2">
 				       { this.state.info.result.quote.Name } ({ this.state.info.result.quote.Symbol })
 				    </p>
 						<div id={ styles.infoContent } className="content is-clearfix columns is-multiline">
