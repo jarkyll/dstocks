@@ -12,11 +12,19 @@ class Card extends React.Component {
 		this.saveStock = this.saveStock.bind(this)
 		this.deleteStock = this.deleteStock.bind(this)
 		this.convertTimeStamp = this.convertTimeStamp.bind(this)
+		this.showAlert = this.showAlert.bind(this)
 		this.state = {
 			inputValue: '',
 			fetchingInfo: false,
 			info: this.props.data,
-			chartId: shortid.generate()
+			chartId: shortid.generate(),
+			alertOptions: {
+		    offset: 14,
+		    position: 'bottom left',
+		    theme: 'dark',
+		    time: 5000,
+		    transition: 'scale'
+		  }
 		}
 	}
 
@@ -39,6 +47,7 @@ class Card extends React.Component {
 		}
 		store.set('result', savedStocks)
 		this.props.updateSave(savedStocks)
+		this.showAlert()
 	}
 
 	deleteStock () {
@@ -79,6 +88,13 @@ class Card extends React.Component {
 		})
 	}
 
+	showAlert () {
+		this.msg.show('Some text or component', {
+      time: 2000,
+      type: 'success'
+    })
+	}
+
 	render () {
 		let button = null
 		if (this.props.save) {
@@ -102,19 +118,43 @@ class Card extends React.Component {
 
 							<div className="column is-8">
 								<div className="columns is-multiline">
-									<div className="column is-6">
+									<div className="column is-3">
 										<span className="subtitle">Open:</span> { parseFloat(this.state.info.result.quote.Open).toFixed(2) }
 									</div>
 
-									<div className="column is-6">
+									<div className="column is-3">
 										<span className="subtitle">Current:</span> { parseFloat(this.state.info.result.quote.realtime_price).toFixed(2) }
 									</div>
 
-									<div className="column is-6">
+									<div className="column is-3">
 										<span className="subtitle">Change:</span> { parseFloat(this.state.info.result.quote.realtime_change).toFixed(2) }
 									</div>
 
-									<div className="column is-6">
+									<div className="column is-3">
+										<span className="subtitle">ChangePercent:</span> { parseFloat(this.state.info.result.quote.realtime_chg_percent).toFixed(2) }
+									</div>
+
+									<div className="column is-3">
+										<span className="subtitle">Day Low:</span> { parseFloat(this.state.info.result.quote.DaysLow).toFixed(2) }
+									</div>
+
+									<div className="column is-3">
+										<span className="subtitle">Day High:</span> { parseFloat(this.state.info.result.quote.DaysHigh).toFixed(2) }
+									</div>
+
+									<div className="column is-3">
+										<span className="subtitle">Year Low:</span> { parseFloat(this.state.info.result.quote.YearLow).toFixed(2) }
+									</div>
+
+									<div className="column is-3">
+										<span className="subtitle">Year High:</span> { parseFloat(this.state.info.result.quote.YearHigh).toFixed(2) }
+									</div>
+
+									<div className="column is-3">
+										<span className="subtitle">Y:</span> { parseFloat(this.state.info.result.quote.realtime_change).toFixed(2) }
+									</div>
+
+									<div className="column is-3">
 										<span className="subtitle">ChangePercent:</span> { parseFloat(this.state.info.result.quote.realtime_chg_percent).toFixed(2) }
 									</div>
 								</div>

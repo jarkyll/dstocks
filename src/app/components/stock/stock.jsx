@@ -6,6 +6,8 @@ import Card from '../card/card.jsx'
 import Chart from 'chart.js';
 import classNames from 'classnames'
 import _ from 'lodash'
+import AlertContainer from 'react-alert'
+
 
 
 class Stock extends React.Component {
@@ -16,11 +18,19 @@ class Stock extends React.Component {
 		this.fetchSavedStock = this.fetchSavedStock.bind(this)
 		this.updateInput = this.updateInput.bind(this)
 		this.updateSavedInfo = this.updateSavedInfo.bind(this)
+		this.showAlert = this.showAlert.bind(this)
 		this.state = {
 			inputValue: '',
 			result: null,
 			fetchingInfo: false,
-			savedInfo: null
+			savedInfo: null,
+			alertOptions: {
+		    offset: 14,
+		    position: 'bottom left',
+		    theme: 'dark',
+		    time: 5000,
+		    transition: 'scale'
+		  }
 		}
 	}
 
@@ -35,36 +45,42 @@ class Stock extends React.Component {
 	}
 
 	fetchStock () {
-		const payload = {
-			params: {
-				ticker: this.state.inputValue
+		if (!_.isEmpty(this.state.inputValue)) {
+			if (/^[a-zA-Z]+$/.test(this.state.inputValue)) {
+				const payload = {
+					params: {
+						ticker: this.state.inputValue
+					}
+				}
+
+				this.setState((prevState, props) => {
+					return {
+						fetchingInfo: true
+					}
+				})
+				axios.get('http://localhost:9000/api/stockInfo', payload).then(response => {
+					this.setState((prevState, props) => {
+						return {
+							result: response.data,
+							fetchingInfo: false
+						}
+					})
+
+
+				}).catch(response => {
+					this.setState((prevState, props) => {
+						return {
+							result: response.data,
+							fetchingInfo: false
+						}
+					})
+				})
+			} else {
+				this.showAlert('Input must be alphabetical characters')
 			}
+		} else {
+			this.showAlert('Input can not be empty')
 		}
-
-		this.setState((prevState, props) => {
-			return {
-				fetchingInfo: true
-			}
-		})
-
-		axios.get('http://localhost:9000/api/stockInfo', payload).then(response => {
-			console.log(response.data)
-			this.setState((prevState, props) => {
-				return {
-					result: response.data,
-					fetchingInfo: false
-				}
-			})
-
-
-		}).catch(response => {
-			this.setState((prevState, props) => {
-				return {
-					result: response.data,
-					fetchingInfo: false
-				}
-			})
-		})
 	}
 
 	saveStock () {
@@ -86,6 +102,13 @@ class Stock extends React.Component {
 				savedInfo: newState
 			}
 		})
+	}
+
+	showAlert (mssg) {
+		this.msg.error(mssg, {
+      time: 2000,
+      type: 'success'
+    })
 	}
 
 	render () {
@@ -128,14 +151,14 @@ class Stock extends React.Component {
 				<div className="column is-12">
 					<div id={ styles.stocks } className="columns is-multiline">
 						{ this.state.result &&
-							<Card data={this.state.result} save={true} updateSave={this.updateSavedInfo}/>
+							<Card data={this.state.result} save={true} updateSave={this.updateSavedInfo} alert={this.showAlert = this.showAlert.bind(this)}/>
 						}
 
 						{savedInfo}
 					</div>
-
-
 				</div>
+
+				<AlertContainer ref={a => this.msg = a} {...this.state.alertOptions} />
 			</div>
 		)
 	}
