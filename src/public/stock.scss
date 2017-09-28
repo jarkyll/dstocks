@@ -1,0 +1,27 @@
+
+
+#stocks {
+  overflow: overlay;
+  max-height: 80%;
+}
+
+
+#input {
+  box-shadow: 0 8px 6px -8px black;
+  width: 100%;
+  z-index: 500;
+}
+
+#info {
+  clear: both;
+  position: relative;
+  height: 100%;
+}
+
+#infoContent {
+  position: relative;
+}
+
+#savedTitle {
+  border-top: gray solid 1px;
+}

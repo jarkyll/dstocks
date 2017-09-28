@@ -58,28 +58,29 @@ class Stock extends React.Component {
 						fetchingInfo: true
 					}
 				})
+				this.showAlert('Fetching Stock Info', 'show')
+
 				axios.get('http://localhost:9000/api/stockInfo', payload).then(response => {
+					console.log(response)
 					this.setState((prevState, props) => {
 						return {
 							result: response.data,
 							fetchingInfo: false
 						}
 					})
-
-
-				}).catch(response => {
+				}).catch((response) => {
+					this.showAlert('Unable to fetch Stock Info', 'error')
 					this.setState((prevState, props) => {
 						return {
-							result: response.data,
 							fetchingInfo: false
 						}
 					})
 				})
 			} else {
-				this.showAlert('Input must be alphabetical characters')
+				this.showAlert('Input must be alphabetical characters', 'error')
 			}
 		} else {
-			this.showAlert('Input can not be empty')
+			this.showAlert('Input can not be empty', 'error')
 		}
 	}
 
@@ -88,6 +89,7 @@ class Stock extends React.Component {
 	}
 
 	fetchSavedStock () {
+		this.showAlert('Fetching Saved Stock Info', 'show')
 		let data = store.get('result')
 		this.setState((prevState, props) => {
 			return {
@@ -97,6 +99,7 @@ class Stock extends React.Component {
 	}
 
 	updateSavedInfo (newState) {
+		this.showAlert('Updating Saved Stocks', 'info')
 		this.setState((prevState, props) => {
 			return {
 				savedInfo: newState
@@ -104,8 +107,8 @@ class Stock extends React.Component {
 		})
 	}
 
-	showAlert (mssg) {
-		this.msg.error(mssg, {
+	showAlert (mssg, type) {
+		this.msg[type](mssg, {
       time: 2000,
       type: 'success'
     })

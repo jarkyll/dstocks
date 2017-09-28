@@ -24,7 +24,11 @@ routes.get('/stockInfo', (req, res) => {
         chart: response[0],
         result: data.query.results
       })
-    }).catch(err => console.log(err))
+    }).catch(err => {
+      res.status(400).send(err)
+    })
+  }).catch(err => {
+    res.status(400).send(err)
   })
 })
 

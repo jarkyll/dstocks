@@ -12,7 +12,6 @@ class Card extends React.Component {
 		this.saveStock = this.saveStock.bind(this)
 		this.deleteStock = this.deleteStock.bind(this)
 		this.convertTimeStamp = this.convertTimeStamp.bind(this)
-		this.showAlert = this.showAlert.bind(this)
 		let change = parseFloat(this.props.data.result.quote.realtime_change).toFixed(2)
 		let changePercent = parseFloat(this.props.data.result.quote.realtime_chg_percent).toFixed(2)
 		this.state = {
@@ -21,14 +20,7 @@ class Card extends React.Component {
 			info: this.props.data,
 			chartId: shortid.generate(),
 			change: change,
-			changePercent: changePercent,
-			alertOptions: {
-		    offset: 14,
-		    position: 'bottom left',
-		    theme: 'dark',
-		    time: 5000,
-		    transition: 'scale'
-		  }
+			changePercent: changePercent
 		}
 	}
 
@@ -51,12 +43,10 @@ class Card extends React.Component {
 		}
 		store.set('result', savedStocks)
 		this.props.updateSave(savedStocks)
-		this.showAlert()
 	}
 
 	deleteStock () {
 		let savedStocks = store.get('result')
-		console.log(savedStocks, this.props)
 		savedStocks.splice(this.props.index, 1)
 		store.set('result', savedStocks)
 		this.props.updateSave(savedStocks)
@@ -92,18 +82,10 @@ class Card extends React.Component {
 		})
 	}
 
-	showAlert () {
-		this.msg.show('Some text or component', {
-      time: 2000,
-      type: 'success'
-    })
-	}
-
 
 	render () {
 
 		let changeText = ''
-		console.log(this.state.change)
 		if (this.state.change > 0 ) {
 				changeText = ' +' + this.state.change + ' (+' + this.state.changePercent + ')'
 		} else {
